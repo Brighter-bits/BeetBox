@@ -3,6 +3,7 @@ from google import genai
 from dotenv import load_dotenv
 from YoutubeDownloader import fetch
 from pathlib import Path
+import os
 
 load_dotenv("API.env")
 
@@ -27,6 +28,12 @@ Here is the user prompt:
 
 @app.route('/')
 def home():
+    import shutil
+    try:
+        music_folder = Path(app.static_folder) / "music"
+        shutil.rmtree(music_folder)
+    except:
+        pass
     return render_template("index.html")
 
 @app.route("/GemmaRequest", methods=["POST"])
@@ -51,13 +58,15 @@ def GemmaRequest():
 
 def DecodeAndDownload(Songs: str):
     Songs = Songs.strip("{} ").split(",")
-    for song in Songs:
-        fetch(song)
+    try:
+        for song in Songs:
+            fetch(song)
+    except:
+        pass
 
 @app.route("/playlist")
 def playlist():
     music_folder = Path(app.static_folder) / "music"
-
     supported_formats = {".mp3", ".ogg", ".wav", ".m4a", ".flac"}
 
     tracks = sorted(

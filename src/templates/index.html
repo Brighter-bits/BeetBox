@@ -13,13 +13,13 @@
 	</head>
 	<body class="homepage is-preload">
 		<div id="page-wrapper">
-
 			<!-- Header -->
-				<div id="header-wrapper">
-					<div id="header" class="container">
-
-						<!-- Logo -->
-							<h1 id="logo"><a href="index.html">BeetBox</a></h1>
+			<div id="header-wrapper">
+				<img src = "{{ url_for('static', filename='img/favi.png') }}" style="width: 20%; height: auto; position: fixed">
+				<div id="header" class="container">
+					
+					<!-- Logo -->
+					<h1 id="logo"><a href="index.html">BeetBox</a></h1>
 
 					</div>
 
@@ -115,10 +115,12 @@
 
 						// Display the result on the same page
 						result.textContent = data;
+						loadPlaylist()
 
 					} catch (error) {
 						result.textContent =
 							"Something went wrong: " + error.message;
+						loadPlaylist()
 
 					} finally {
 						// Hide loading box and re-enable the button
@@ -142,6 +144,8 @@
 
 				async function loadPlaylist() {
 					try {
+						playPause.disabled = false;
+						nextTrack.disabled = false;
 						const response = await fetch("/playlist");
 
 						if (!response.ok) {
@@ -151,18 +155,19 @@
 						playlist = await response.json();
 
 						if (playlist.length === 0) {
-							document.getElementById("music-player!").style.visibility = false;
+							document.getElementById("music-player!").style.visibility = "hidden";
 							trackTitle.textContent = "No music found";
 							musicStatus.textContent = "Add audio files to static/music/";
 							playPause.disabled = true;
 							nextTrack.disabled = true;
 							return;
 						} else {
-							document.getElementById("music-player!").style.visibility = true;
+							document.getElementById("music-player!").style.visibility = "visible";
 						}
 
 						loadTrack(0);
 					} catch (error) {
+						document.getElementById("music-player!").style.visibility = "hidden";
 						trackTitle.textContent = "Failed to load playlist";
 						console.error(error);
 					}
