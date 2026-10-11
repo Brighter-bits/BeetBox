@@ -19,8 +19,8 @@ from mutagen.id3 import APIC, ID3, ID3NoHeaderError
 from yt_dlp import YoutubeDL
 from installffmpeg import ensure_ffmpeg
 
-MUSIC_DIR = os.path.expanduser("./Music")
-DURATION_TOLERANCE = 5          # seconds; max length difference vs the MusicBrainz recording
+MUSIC_DIR = os.path.expanduser("./src/static/music")
+DURATION_TOLERANCE = 12          # seconds; max length difference vs the MusicBrainz recording
 MAX_UNKNOWN_DURATION = 15 * 60  # if MusicBrainz has no length, reject anything longer (loops, mixes)
 FFMPEG_DIR = ensure_ffmpeg()
 
