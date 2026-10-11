@@ -1,3 +1,4 @@
 *.env
+src/.bin
 Music/
 src/__pycache__

@@ -17,10 +17,12 @@ import musicbrainzngs as mb
 import requests
 from mutagen.id3 import APIC, ID3, ID3NoHeaderError
 from yt_dlp import YoutubeDL
+from installffmpeg import ensure_ffmpeg
 
 MUSIC_DIR = os.path.expanduser("./Music")
 DURATION_TOLERANCE = 5          # seconds; max length difference vs the MusicBrainz recording
 MAX_UNKNOWN_DURATION = 15 * 60  # if MusicBrainz has no length, reject anything longer (loops, mixes)
+FFMPEG_DIR = ensure_ffmpeg()
 
 # Words that mark a different version of the song. A YouTube result containing one is rejected
 # unless the word is also in the title/album you asked for.
@@ -233,6 +235,7 @@ def download_audio(video_id, stem):
     opts = {
         "format": "bestaudio/best",
         "outtmpl": os.path.join(MUSIC_DIR, safe(stem)) + ".%(ext)s",
+        "ffmpeg_location": str(FFMPEG_DIR),
         "postprocessors": [
             {"key": "FFmpegExtractAudio", "preferredcodec": "mp3", "preferredquality": "0"}
         ],
