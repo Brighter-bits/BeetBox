@@ -2089,17 +2089,17 @@ input, select, textarea {
 			top: 0;
 			z-index: 1;
 			box-shadow: inset 0px 0px 0px 1px #e8e8e8;
-			background: #f6f8fb url("images/image-wrapper.svg");
+			background: #f6f8fb url("image-wrapper.svg");
 		}
 
 	#header-wrapper {
 		position: relative;
 		padding: 4em 0 2em 0;
-		background-image: url("images/header.svg");
-		background-image: url("images/overlay.png"), url("images/header.svg"), -moz-linear-gradient(75deg, #814b23 15%, #dfb72b 55%);
-		background-image: url("images/overlay.png"), url("images/header.svg"), -webkit-linear-gradient(75deg, #814b23 15%, #dfb72b 55%);
-		background-image: url("images/overlay.png"), url("images/header.svg"), -ms-linear-gradient(75deg, #814b23 15%, #dfb72b 55%);
-		background-image: url("images/overlay.png"), url("images/header.svg"), linear-gradient(75deg, #814b23 15%, #dfb72b 55%);
+		background-image: url("header.svg");
+		background-image: url("overlay.png"), url("header.svg"), -moz-linear-gradient(75deg, #814b23 15%, #dfb72b 55%);
+		background-image: url("overlay.png"), url("header.svg"), -webkit-linear-gradient(75deg, #814b23 15%, #dfb72b 55%);
+		background-image: url("overlay.png"), url("header.svg"), -ms-linear-gradient(75deg, #814b23 15%, #dfb72b 55%);
+		background-image: url("overlay.png"), url("header.svg"), linear-gradient(75deg, #814b23 15%, #dfb72b 55%);
 		background-color: #f4e13c;
 		background-size: 100% 620%;
 		background-size: 128px 128px, 100% 620%, auto;
@@ -2113,7 +2113,7 @@ input, select, textarea {
 
 	#promo-wrapper {
 		position: relative;
-		background-image: url("images/overlay.png"), url("../../images/promo.jpg");
+		background-image: url("overlay.png"), url("../img/promo.jpg");
 		background-size: 192px 192px, cover;
 		background-position: top left, center center;
 		color: #fff;
@@ -2126,7 +2126,7 @@ input, select, textarea {
 		position: relative;
 		border-top: solid 1px #c2c7cc;
 		padding: 6em 0 6em 0;
-		background-image: url("images/overlay.png"), url("images/footer.svg");
+		background-image: url("overlay.png"), url("footer.svg");
 		background-size: 128px 128px,				100% 100%;
 	}
 
@@ -2858,10 +2858,10 @@ input, select, textarea {
 				-webkit-transition: -webkit-transform 0.5s ease;
 				-ms-transition: -ms-transform 0.5s ease;
 				transition: transform 0.5s ease;
-				background-image: url("images/overlay.png"), url("images/navPanel.svg"), -moz-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.25));
-				background-image: url("images/overlay.png"), url("images/navPanel.svg"), -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.25));
-				background-image: url("images/overlay.png"), url("images/navPanel.svg"), -ms-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.25));
-				background-image: url("images/overlay.png"), url("images/navPanel.svg"), linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.25));
+				background-image: url("overlay.png"), url("navPanel.svg"), -moz-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.25));
+				background-image: url("overlay.png"), url("navPanel.svg"), -webkit-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.25));
+				background-image: url("overlay.png"), url("navPanel.svg"), -ms-linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.25));
+				background-image: url("overlay.png"), url("navPanel.svg"), linear-gradient(top, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.25));
 				display: block;
 				left: 0;
 				overflow-y: auto;

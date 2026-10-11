@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<!--
+	Telephasic by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>BeetBox</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<div id="header-wrapper">
+					<div id="header" class="container">
+
+						<!-- Logo -->
+							<h1 id="logo"><a href="index.html">BeetBox</a></h1>
+
+					</div>
+
+					<!-- Hero -->
+						<section id="hero" class="container">
+							<header>
+								<h2>BeetBox, the open source
+								<br />
+								playlist generator</h2>
+							</header>
+							<p>Designed and built for UoM Open Source
+							<br />
+							Society Hacktoberfest Hack Day 2026</p>
+							
+						</section>
+
+				</div>
+
+			<!-- Promo -->
+				<div id="promo-wrapper">
+					<section id="promo">
+					<h2>Talk to the DJ</h2>
+					<p></p>
+						<form method="post" action="/GemmaRequest">
+						  <input name="Request" placeholder="Start typing..." type="text" />
+						</form>
+						<div id="copyright" class="container">
+						<ul class="menu">
+							<li>UoM Open Source Society</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</div>
+					</section>
+				</div>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/jquery.dropotron.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/util.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+	</body>
+</html>

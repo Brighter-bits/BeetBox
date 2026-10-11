@@ -25,7 +25,7 @@ Here is the user prompt:
 
 @app.route('/')
 def home():
-    return render_template("Frontend.html")
+    return render_template("index.html")
 
 # @app.route("/GemmaRequest", methods=["POST"])
 def GemmaRequest():
@@ -52,6 +52,6 @@ def DecodeAndDownload(Songs: str):
 
 
 
-# app.run(port=1111)
+app.run(port=1111)
 
 GemmaRequest()
