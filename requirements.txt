@@ -1,2 +1,6 @@
 flask
 google-genai
+musicbrainzngs
+yt-dlp
+mutagen
+ffmpeg
