@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<!--
+	Telephasic by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>BeetBox</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+			<!-- Header -->
+			<div id="header-wrapper">
+				<img src = "{{ url_for('static', filename='img/favi.png') }}" style="width: 20%; height: auto; position: fixed">
+				<div id="header" class="container">
+					
+					<!-- Logo -->
+					<h1 id="logo"><a href="index.html">BeetBox</a></h1>
+
+					</div>
+
+					<!-- Hero -->
+						<section id="hero" class="container">
+							<header>
+								<h2>BeetBox, the open source
+								<br />
+								playlist generator</h2>
+							</header>
+							<p>Designed and built for UoM Open Source
+							<br />
+							Society Hacktoberfest Hack Day 2026</p>
+							
+						</section>
+
+				</div>
+
+			<!-- Promo -->
+				<div id="promo-wrapper">
+					<section id="promo">
+						<h2>Talk to the DJ</h2>
+						<p></p>
+						<form id = "forminput" method="post" action="/GemmaRequest">
+							<input name="Request" placeholder="Start typing..." type="text" />
+						</form>
+						<div id="loadingBox" hidden>
+							<p>Making your mix</p>
+							<div class="spinner"></div>
+						</div>
+						<div id="result"></div>
+
+						
+						<div id = "music-player!" class="music-player">
+							<p id="trackTitle">Loading playlist...</p>
+
+							<audio id="music" preload="metadata"></audio>
+
+							<button id="playPause" type="button">▶ Play</button>
+							<button id="nextTrack" type="button">Next ⏭</button>
+
+							<span id="musicStatus"></span>
+						</div>
+
+
+						<div id="copyright" class="container">
+							<ul class="menu">
+								<li>UoM Open Source Society</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+
+
+					</section>
+				</div>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/jquery.dropotron.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/util.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+			<script defer>
+				const form = document.getElementById("forminput");
+				const loadingBox = document.getElementById("loadingBox");
+				const result = document.getElementById("result");
+				
+				form.addEventListener("submit", async (event) => {
+					console.log("Form submitted!");
+					// Stop the browser from navigating to another page
+					event.preventDefault();
+
+					// Show the loading box
+					loadingBox.hidden = false;
+					result.textContent = "";
+
+
+					try {
+						// Send the form to Flask
+						const response = await fetch(form.action, {
+							method: "POST",
+							body: new FormData(form)
+						});
+
+						if (!response.ok) {
+							throw new Error(`Server returned ${response.status}`);
+						}
+
+						// Read the response
+						const data = await response.text();
+
+						// Display the result on the same page
+						result.textContent = data;
+						loadPlaylist()
+
+					} catch (error) {
+						result.textContent =
+							"Something went wrong: " + error.message;
+						loadPlaylist()
+
+					} finally {
+						// Hide loading box and re-enable the button
+						loadingBox.hidden = true;
+						loadPlaylist()
+					}
+				});
+
+
+
+
+				
+				const music = document.getElementById("music");
+				const playPause = document.getElementById("playPause");
+				const nextTrack = document.getElementById("nextTrack");
+				const trackTitle = document.getElementById("trackTitle");
+				const musicStatus = document.getElementById("musicStatus");
+
+				let playlist = [];
+				let currentTrack = 0;
+
+				async function loadPlaylist() {
+					try {
+						playPause.disabled = false;
+						nextTrack.disabled = false;
+						const response = await fetch("/playlist");
+
+						if (!response.ok) {
+							throw new Error("Could not load playlist");
+						}
+
+						playlist = await response.json();
+
+						if (playlist.length === 0) {
+							document.getElementById("music-player!").style.visibility = "hidden";
+							trackTitle.textContent = "No music found";
+							musicStatus.textContent = "Add audio files to static/music/";
+							playPause.disabled = true;
+							nextTrack.disabled = true;
+							return;
+						} else {
+							document.getElementById("music-player!").style.visibility = "visible";
+						}
+
+						loadTrack(0);
+					} catch (error) {
+						document.getElementById("music-player!").style.visibility = "hidden";
+						trackTitle.textContent = "Failed to load playlist";
+						console.error(error);
+					}
+				}
+
+				function loadTrack(index) {
+					currentTrack = index;
+					music.src = playlist[currentTrack].url;
+					trackTitle.textContent = playlist[currentTrack].title;
+					musicStatus.textContent =
+						`Track ${currentTrack + 1} of ${playlist.length}`;
+				}
+
+				async function playCurrentTrack() {
+					try {
+						await music.play();
+					} catch (error) {
+						musicStatus.textContent = "Playback failed";
+						console.error(error);
+					}
+				}
+
+				playPause.addEventListener("click", async () => {
+					if (music.paused) {
+						await playCurrentTrack();
+					} else {
+						music.pause();
+					}
+				});
+
+				nextTrack.addEventListener("click", () => {
+					// Loop back to the first track after the last
+					const next = (currentTrack + 1) % playlist.length;
+					loadTrack(next);
+					playCurrentTrack();
+				});
+
+				music.addEventListener("ended", () => {
+					// Automatically advance when a song finishes
+					const next = (currentTrack + 1) % playlist.length;
+					loadTrack(next);
+					playCurrentTrack();
+				});
+
+				music.addEventListener("play", () => {
+					playPause.textContent = "⏸ Pause";
+				});
+
+				music.addEventListener("pause", () => {
+					playPause.textContent = "▶ Play";
+				});
+
+				music.addEventListener("error", () => {
+					musicStatus.textContent = "Unable to load this track";
+				});
+
+				loadPlaylist();
+
+			</script>
+	</body>
+</html>

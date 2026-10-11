@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify, url_for
 from google import genai
 from dotenv import load_dotenv
 from YoutubeDownloader import fetch
+from pathlib import Path
+import os
+
 load_dotenv("API.env")
 
 
@@ -25,33 +28,64 @@ Here is the user prompt:
 
 @app.route('/')
 def home():
-    return render_template("Frontend.html")
+    import shutil
+    try:
+        music_folder = Path(app.static_folder) / "music"
+        shutil.rmtree(music_folder)
+    except:
+        pass
+    return render_template("index.html")
 
-# @app.route("/GemmaRequest", methods=["POST"])
+@app.route("/GemmaRequest", methods=["POST"])
 def GemmaRequest():
-    # prompt = request.form["Request"]
-    # if len(prompt) > 300:
-    #     return "Error"
+    prompt = request.form["Request"]
+    if len(prompt) > 300:
+        return "Error", 400
     print("Sending Request")
     response = client.models.generate_content(
         model="gemma-4-26b-a4b-it",
         config = genai.types.GenerateContentConfig(
             system_instruction=PromptPrefill
         ),
-        contents="Give me some R&B recs",
+        contents=prompt,
     )
     print(response.text)
     if response.text == None:
         return "Error"
-    return response.text
+    DJ, songs = (response.text).split("{")
+    DecodeAndDownload(songs)
+    return DJ
 
 def DecodeAndDownload(Songs: str):
     Songs = Songs.strip("{} ").split(",")
-    for song in Songs:
-        fetch(song)
+    try:
+        for song in Songs:
+            fetch(song)
+    except:
+        pass
 
+@app.route("/playlist")
+def playlist():
+    music_folder = Path(app.static_folder) / "music"
+    supported_formats = {".mp3", ".ogg", ".wav", ".m4a", ".flac"}
 
+    tracks = sorted(
+        (
+            file for file in music_folder.iterdir()
+            if file.is_file() and file.suffix.lower() in supported_formats
+        ),
+        key=lambda file: file.name.casefold()
+    ) if music_folder.is_dir() else []
 
-# app.run(port=1111)
+    return jsonify([
+        {
+            "title": file.stem,
+            "url": url_for(
+                "static",
+                filename=f"music/{file.name}"
+            )
+        }
+        for file in tracks
+    ])
 
-GemmaRequest()
+app.run(port=1111)
