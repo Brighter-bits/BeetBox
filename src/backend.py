@@ -38,20 +38,20 @@ def GemmaRequest():
         config = genai.types.GenerateContentConfig(
             system_instruction=PromptPrefill
         ),
-        contents="Give me some RMB recs",
+        contents="Give me some R&B recs",
     )
     print(response.text)
     if response.text == None:
         return "Error"
     return response.text
 
-# @app.route("/api", methods=["POST"])
-# def api():
-#     pass
+def DecodeAndDownload(Songs: str):
+    Songs = Songs.strip("{} ").split(",")
+    for song in Songs:
+        fetch(song)
 
 
 
 # app.run(port=1111)
 
-# GemmaRequest()
-print(fetch("I Got You Babe - Look at Us - Sonny & Cher"))
+GemmaRequest()
